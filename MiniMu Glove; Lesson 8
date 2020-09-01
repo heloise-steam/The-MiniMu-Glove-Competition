@@ -1,0 +1,61 @@
+def store():
+    NOTES.append(NOTE)
+    playnote(NOTE)
+
+def on_gesture_logo_up():
+    if recording:
+        music.play_tone(523, music.beat(BeatFraction.QUARTER))
+        music.play_tone(659, music.beat(BeatFraction.QUARTER))
+        music.play_tone(784, music.beat(BeatFraction.QUARTER))
+input.on_gesture(Gesture.LOGO_UP, on_gesture_logo_up)
+
+def on_gesture_tilt_left():
+    global NOTE
+    NOTE = "A"
+input.on_gesture(Gesture.TILT_LEFT, on_gesture_tilt_left)
+
+def on_gesture_screen_up():
+    global NOTE
+    NOTE = "D"
+input.on_gesture(Gesture.SCREEN_UP, on_gesture_screen_up)
+
+def on_gesture_screen_down():
+    global NOTES, recording
+    for index in range(4):
+        music.play_tone(523, music.beat(BeatFraction.EIGHTH))
+        basic.pause(100)
+    NOTES = []
+    recording = True
+input.on_gesture(Gesture.SCREEN_DOWN, on_gesture_screen_down)
+
+def on_gesture_tilt_right():
+    global NOTE
+    NOTE = "E"
+input.on_gesture(Gesture.TILT_RIGHT, on_gesture_tilt_right)
+
+def playnote(note: str):
+    if NOTE == "A":
+        music.play_tone(440, music.beat(BeatFraction.WHOLE))
+    elif NOTE == "D":
+        music.play_tone(294, music.beat(BeatFraction.WHOLE))
+    elif NOTE == "E":
+        music.play_tone(330, music.beat(BeatFraction.WHOLE))
+def playback():
+    index2 = 0
+    while index2 <= len(NOTES):
+        playnote(NOTES[index2])
+        index2 += 1
+recording = False
+NOTE = ""
+NOTES: List[str] = []
+music.play_tone(523, music.beat(BeatFraction.SIXTEENTH))
+NOTES = []
+NOTE = "A"
+
+def on_forever():
+    if input.acceleration(Dimension.STRENGTH) > 2000:
+        if recording:
+            store()
+        else:
+            playback()
+basic.forever(on_forever)
