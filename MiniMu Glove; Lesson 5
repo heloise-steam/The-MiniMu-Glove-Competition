@@ -1,0 +1,35 @@
+def check():
+    if you == me:
+        music.play_tone(523, music.beat(BeatFraction.WHOLE))
+    else:
+        music.play_tone(262, music.beat(BeatFraction.WHOLE))
+
+def on_gesture_logo_up():
+    global you
+    music.play_tone(262, music.beat(BeatFraction.EIGHTH))
+    basic.pause(500)
+    music.play_tone(262, music.beat(BeatFraction.EIGHTH))
+    basic.pause(500)
+    music.play_tone(262, music.beat(BeatFraction.EIGHTH))
+    you = randint(0, 2)
+input.on_gesture(Gesture.LOGO_UP, on_gesture_logo_up)
+
+def on_gesture_tilt_left():
+    global me
+    me = 0
+input.on_gesture(Gesture.TILT_LEFT, on_gesture_tilt_left)
+
+def on_gesture_screen_up():
+    global me
+    me = 1
+input.on_gesture(Gesture.SCREEN_UP, on_gesture_screen_up)
+
+def on_gesture_tilt_right():
+    global me
+    me = 2
+    check()
+input.on_gesture(Gesture.TILT_RIGHT, on_gesture_tilt_right)
+
+me = 0
+you = 0
+music.play_tone(523, music.beat(BeatFraction.WHOLE))
