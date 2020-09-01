@@ -1,0 +1,34 @@
+def on_gesture_tilt_left():
+    global LEFT
+    LEFT = True
+input.on_gesture(Gesture.TILT_LEFT, on_gesture_tilt_left)
+
+def on_gesture_screen_up():
+    global RIGHT
+    if RIGHT:
+        RIGHT = False
+        START()
+input.on_gesture(Gesture.SCREEN_UP, on_gesture_screen_up)
+
+def START():
+    global ALARM
+    ALARM = input.running_time() + DURATION
+
+def on_gesture_tilt_right():
+    global RIGHT
+    RIGHT = True
+input.on_gesture(Gesture.TILT_RIGHT, on_gesture_tilt_right)
+
+ALARM = 0
+RIGHT = False
+LEFT = False
+DURATION = 0
+DURATION = 5000
+music.play_tone(523, music.beat(BeatFraction.SIXTEENTH))
+START()
+
+def on_forever():
+    if input.running_time() > ALARM:
+        music.play_tone(523, music.beat(BeatFraction.SIXTEENTH))
+        basic.pause(200)
+basic.forever(on_forever)
